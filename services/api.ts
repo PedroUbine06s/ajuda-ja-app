@@ -41,7 +41,7 @@ export interface User {
           dateOfBirth: string;
           phone: string;
           address: string;
-          location: {
+          location?: {
               type: string,
               coordinates: number[]
           }
