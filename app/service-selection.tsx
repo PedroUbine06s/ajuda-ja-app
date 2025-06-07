@@ -1,0 +1,191 @@
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Alert, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { getServices, ApiService, createAccount, CreateUserPayload } from '../services/api';
+
+export default function ServiceSelectionScreen() {
+  const params = useLocalSearchParams();
+  const router = useRouter();
+
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [availableServices, setAvailableServices] = useState<ApiService[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const data = await getServices();
+        setAvailableServices(data);
+      } catch (error) {
+        Alert.alert('Erro de Rede', 'Não foi possível carregar a lista de serviços. Tente novamente.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
+
+  const toggleService = (serviceName: string) => {
+    if (selectedServices.includes(serviceName)) {
+      setSelectedServices(selectedServices.filter(s => s !== serviceName));
+    } else {
+      setSelectedServices([...selectedServices, serviceName]);
+    }
+  };
+
+  const handleContinue = async () => {
+    if (selectedServices.length === 0) {
+      Alert.alert('Erro', 'Selecione pelo menos um serviço.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const serviceIds = availableServices
+        .filter(service => selectedServices.includes(service.name))
+        .map(service => service.id);
+
+      const finalPayload: CreateUserPayload = {
+        name: params.name as string,
+        email: params.email as string,
+        dateOfBirth: params.dateOfBirth as string,
+        phone: params.phone as string,
+        address: params.address as string,
+        password: params.password as string,
+        userType: 'PROVIDER',
+        serviceIds: serviceIds,
+      };
+
+      const newUser = await createAccount(finalPayload);
+
+      Alert.alert('Sucesso!', `Conta de prestador para ${newUser.user.name} criada com sucesso!`);
+      router.push('/login');
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido.';
+      Alert.alert('Erro no Cadastro', errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Seleção de Serviços</Text>
+
+      <Text style={styles.label}>Clique para selecionar os serviços que você presta</Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#8a2be2" />
+      ) : (
+        <ScrollView nestedScrollEnabled={true} style={styles.serviceListContainer}>
+          {availableServices.map((service) => (
+            <TouchableOpacity
+              key={service.id}
+              style={[
+                styles.serviceItem,
+                selectedServices.includes(service.name) && styles.serviceItemSelected
+              ]}
+              onPress={() => toggleService(service.name)}
+            >
+              <Text style={[
+                  styles.serviceItemText,
+                  selectedServices.includes(service.name) && styles.serviceItemTextSelected
+                ]}>{service.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
+
+      <Text style={styles.label}>Serviços Selecionados</Text>
+      <View style={styles.tagsContainer}>
+        {selectedServices.length > 0 ? selectedServices.map((service, index) => (
+          <View key={index} style={styles.tag}>
+            <Text style={styles.tagText}>{service}</Text>
+          </View>
+        )) : <Text style={styles.placeholderText}>Nenhum serviço selecionado</Text>}
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title={isSubmitting ? 'Finalizando cadastro...' : 'Finalizar Cadastro'}
+          onPress={handleContinue}
+          disabled={isSubmitting || isLoading}
+          color="#8a2be2"
+        />
+        <View style={styles.buttonSpacer} />
+        <Button title="Voltar" onPress={() => router.back()} color="#6c757d" />
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 20,
+    minHeight: 30,
+  },
+  tag: {
+    backgroundColor: '#8a2be2',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    margin: 5,
+  },
+  tagText: {
+    color: 'white',
+  },
+  placeholderText: {
+    color: 'gray',
+    fontStyle: 'italic',
+    marginLeft: 5,
+  },
+  serviceListContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    maxHeight: 250,
+  },
+  serviceItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  serviceItemSelected: {
+    backgroundColor: '#e9dcfc',
+  },
+  serviceItemText: {
+    fontSize: 16,
+  },
+  serviceItemTextSelected: {
+    fontWeight: 'bold',
+    color: '#8a2be2',
+  },
+  buttonContainer: {
+    marginTop: 30,
+  },
+  buttonSpacer: {
+    height: 10,
+  }
+});
