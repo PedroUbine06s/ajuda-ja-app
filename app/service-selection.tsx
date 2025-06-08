@@ -74,49 +74,63 @@ export default function ServiceSelectionScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Seleção de Serviços</Text>
+      <Text style={styles.title}>Serviços</Text>
+      <View style={styles.viewContainer}>
 
-      <Text style={styles.label}>Clique para selecionar os serviços que você presta</Text>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#8a2be2" />
-      ) : (
-        <ScrollView nestedScrollEnabled={true} style={styles.serviceListContainer}>
-          {availableServices.map((service) => (
-            <TouchableOpacity
-              key={service.id}
-              style={[
-                styles.serviceItem,
-                selectedServices.includes(service.name) && styles.serviceItemSelected
-              ]}
-              onPress={() => toggleService(service.name)}
-            >
-              <Text style={[
+        <Text style={styles.label}>
+          Quais são os serviços que você presta?
+          Selecione eles abaixo!
+        </Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#f9b826" />
+        ) : (
+          <ScrollView nestedScrollEnabled={true} style={styles.serviceListContainer}>
+            {availableServices.map((service) => (
+              <TouchableOpacity
+                key={service.id}
+                style={[
+                  styles.serviceItem,
+                  selectedServices.includes(service.name) && styles.serviceItemSelected
+                ]}
+                onPress={() => toggleService(service.name)}
+              >
+                <Text style={[
                   styles.serviceItemText,
                   selectedServices.includes(service.name) && styles.serviceItemTextSelected
                 ]}>{service.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
 
-      <Text style={styles.label}>Serviços Selecionados</Text>
-      <View style={styles.tagsContainer}>
-        {selectedServices.length > 0 ? selectedServices.map((service, index) => (
-          <View key={index} style={styles.tag}>
-            <Text style={styles.tagText}>{service}</Text>
-          </View>
-        )) : <Text style={styles.placeholderText}>Nenhum serviço selecionado</Text>}
-      </View>
+        <Text style={styles.label}>Serviços Selecionados:</Text>
+        <View style={styles.tagsContainer}>
+          {selectedServices.length > 0 ? selectedServices.map((service, index) => (
+            <View key={index} style={styles.tag}>
+              <Text style={styles.tagText}>{service}</Text>
+            </View>
+          )) : <Text style={styles.placeholderText}>Nenhum serviço selecionado</Text>}
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title={isSubmitting ? 'Finalizando cadastro...' : 'Finalizar Cadastro'}
+        <TouchableOpacity
+          style={[
+            styles.button,
+            (isSubmitting || isLoading) ? styles.buttonDisabled : null
+          ]}
           onPress={handleContinue}
           disabled={isSubmitting || isLoading}
-          color="#8a2be2"
-        />
-        <View style={styles.buttonSpacer} />
-        <Button title="Voltar" onPress={() => router.back()} color="#6c757d" />
+        >
+          <Text style={styles.buttonText}>
+            {isSubmitting ? 'Finalizando cadastro...' : 'Finalizar Cadastro'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, styles.backButton]}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.buttonText}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -124,14 +138,39 @@ export default function ServiceSelectionScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     padding: 20,
     paddingBottom: 40,
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  viewContainer: {
+    padding: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#f9b826',
+    backgroundColor: '#ffffff',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    padding: 15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#f9b826',
+    backgroundColor: '#ffffff',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   label: {
     fontSize: 16,
@@ -182,10 +221,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#8a2be2',
   },
-  buttonContainer: {
-    marginTop: 30,
+  button: {
+    backgroundColor: '#f9b826',
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginTop: 10,
   },
-  buttonSpacer: {
-    height: 10,
-  }
+  backButton: {
+    backgroundColor: '#8a8a8a',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  buttonDisabled: {
+    backgroundColor: '#e9e9e9',
+  },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default function UserHomeScreen() {
   const params = useLocalSearchParams();
@@ -29,44 +30,116 @@ export default function UserHomeScreen() {
   }
 
   const dumpedParams = JSON.stringify(displayData, null, 2);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Raw Login Data:</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
 
-      <ScrollView style={styles.jsonTextContainer}>
-        <Text style={styles.jsonText}>{dumpedParams}</Text>
-      </ScrollView>
+        <View style={styles.logoView}>
+          <Image
+            source={require('../assets/images/app-icon.png')}
+            style={styles.logo}
+          />
+          <Image
+            source={require('../assets/images/default-icon.jpg')}
+            style={styles.fotoPerfil}
+          />
+        </View>
+      </View>
+      <View style={styles.cardContainer}>
+        <Text style={styles.welcomeText}>Seja bem-vindo</Text>
+        <Text style={styles.welcomeText}>Nome!</Text>
+        <View style={{marginTop: 20}}>
+          <TouchableOpacity style={styles.card} onPress={() => router.push('')}>
+            <Text style={styles.cardText}>Solicitar Serviço</Text>
+          </TouchableOpacity>
 
-      <Button title="Go Back" onPress={() => router.back()} />
-    </View>
+          <TouchableOpacity style={styles.card} onPress={() => router.push('')}>
+            <Text style={styles.cardText}>Meus Pedidos</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.card, styles.editCard]} onPress={() => router.push('')}>
+            <Text style={[styles.cardText, {color: 'black'}]}>Editar Perfil</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.card, styles.logoutCard]} onPress={() => router.push('/login')}>
+            <Text style={styles.cardText}>Sair</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    flexGrow: 1,
+    backgroundColor: '#f9b826',
   },
   header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
+    alignItems: 'center',
   },
-  jsonTextContainer: {
-    backgroundColor: '#e0e0e0',
-    padding: 15,
-    borderRadius: 5,
+  logoView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
-    marginBottom: 20,
-    flexShrink: 1,
+    marginTop: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingBottom: 10,
   },
-  jsonText: {
-    fontFamily: 'monospace',
+
+  fotoPerfil: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: 'black',
+    backgroundColor: 'white',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    
+    borderRadius: 20,
+    backgroundColor: 'white',
+  },
+  welcomeText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#000',
+  },
+  cardContainer: {
+    backgroundColor: '#ffffff',
+    padding: 20,
+    flex: 1,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 30,
+  },
+  card: {
+    backgroundColor: '#f9b826',
+    padding: 15,
+    borderRadius: 6,
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  logoutCard: {
+    marginTop: 100,
+    backgroundColor: '#8a8a8a',
+  },
+  cardText: {
     fontSize: 16,
-    color: '#333',
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  editCard: {
+    backgroundColor: 'white',
+    color: 'black',
+    borderWidth: 2,
+    borderColor: '#f9b826',
   },
 });
