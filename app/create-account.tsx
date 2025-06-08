@@ -38,26 +38,26 @@ export default function CreateAccountScreen() {
   const handleCreateAccount = async () => {
     const newErrors = {};
 
-    // if (!name.trim()) newErrors.name = true;
-    // if (!email.trim()) newErrors.email = true;
-    // if (!dateOfBirth.trim()) newErrors.dateOfBirth = true;
-    // if (!phone.trim()) newErrors.phone = true;
-    // if (!address.trim()) newErrors.address = true;
-    // if (!password.trim()) newErrors.password = true;
-    // if (!confirmPassword.trim()) newErrors.confirmPassword = true;
-    // if (password !== confirmPassword) {
-    //   newErrors.confirmPassword = true;
-    //   Alert.alert('Erro', 'As senhas não coincidem.');
-    // }
+    if (!name.trim()) newErrors.name = true;
+    if (!email.trim()) newErrors.email = true;
+    if (!dateOfBirth.trim()) newErrors.dateOfBirth = true;
+    if (!phone.trim()) newErrors.phone = true;
+    if (!address.trim()) newErrors.address = true;
+    if (!password.trim()) newErrors.password = true;
+    if (!confirmPassword.trim()) newErrors.confirmPassword = true;
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = true;
+      Alert.alert('Erro', 'As senhas não coincidem.');
+    }
 
-    // setErrors(newErrors);
+    setErrors(newErrors);
 
-    // if (Object.keys(newErrors).length > 0) {
-    //   if (!newErrors.confirmPassword || password === confirmPassword) {
-    //     Alert.alert('Erro', 'Por favor, preencha todos os campos corretamente.');
-    //   }
-    //   return;
-    // }
+    if (Object.keys(newErrors).length > 0) {
+      if (!newErrors.confirmPassword || password === confirmPassword) {
+        Alert.alert('Erro', 'Por favor, preencha todos os campos corretamente.');
+      }
+      return;
+    }
 
     const formData = {
       name,
