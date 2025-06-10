@@ -15,22 +15,22 @@ export default function MapaScreen() {
             id: 1,
             name: 'Maria Oliveira',
             service: 'Eletricista',
-            top: 80,
+            top: 120,
             left: 100,
         },
         {
             id: 2,
             name: 'Carlos Silva',
             service: 'Encanador',
-            top: 150,
-            left: 200,
+            top: 410,
+            left: 300,
         },
         {
             id: 3,
             name: 'Ana Souza',
-            service: 'Jardineira',
-            top: 220,
-            left: 60,
+            service: 'Carpinteira',
+            top: 90,
+            left: 310,
         },
     ];
 
@@ -54,6 +54,7 @@ export default function MapaScreen() {
                         onPress={() => setSelectedMarker(marker)}
                     >
                         <View style={styles.dot} />
+                        <View style={styles.square} />
                     </TouchableOpacity>
                 ))}
             </View>
@@ -80,7 +81,6 @@ export default function MapaScreen() {
                         <TouchableOpacity
                             style={styles.modalButton}
                             onPress={() => {
-                                // simula ação
                                 setSelectedMarker(null);
                             }}
                         >
@@ -112,14 +112,24 @@ const styles = StyleSheet.create({
     },
     marker: {
         position: 'absolute',
+        alignItems: 'center',
     },
     dot: {
-        width: 16,
-        height: 16,
+        width: 25,
+        height: 25,
         backgroundColor: '#f9b826',
-        borderRadius: 8,
+        borderRadius: 20,
         borderWidth: 2,
         borderColor: '#000',
+    },
+    square: {
+        width: 15,
+        height: 15,
+        backgroundColor: '#f9b826',
+        transform: [{rotate: '45deg'}],
+        marginTop: -13.48,
+        borderBottomWidth: 2,
+        borderRightWidth: 2,
     },
     filterContainer: {
         padding: 10,
