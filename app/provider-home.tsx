@@ -82,7 +82,7 @@ export default function ProviderHomeScreen() {
       formattedNumber = `55${formattedNumber}`;
     }
 
-    const whatsappUrl = `whatsapp://send?phone=${formattedNumber}`;
+    const whatsappUrl = `https://wa.me/${formattedNumber}`;
 
     Linking.canOpenURL(whatsappUrl)
       .then((supported) => {

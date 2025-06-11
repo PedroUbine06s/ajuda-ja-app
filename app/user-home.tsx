@@ -101,7 +101,7 @@ export default function UserHomeScreen() {
     }
 
     const formattedPhoneNumber = phoneNumber.replace(/\D/g, "");
-    const whatsappUrl = `whatsapp://send?phone=${formattedPhoneNumber}`;
+    const whatsappUrl = `https://wa.me/${formattedPhoneNumber}`;
     Linking.canOpenURL(whatsappUrl)
       .then((supported) => {
         if (supported) {
