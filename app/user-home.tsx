@@ -100,20 +100,16 @@ export default function UserHomeScreen() {
       return;
     }
 
-    const formattedPhoneNumber = phoneNumber.replace(/\D/g, "");
-    const whatsappUrl = `https://wa.me/${formattedPhoneNumber}`;
+    const formattedPhoneNumber = "55" + phoneNumber.replace(/\D/g, "")
+    const waMeUrl = `https://wa.me/${formattedPhoneNumber}`;
 
-    const canOpenUrl = await Linking.canOpenURL(whatsappUrl);
-    if (!canOpenUrl) {
+    Linking.openURL(waMeUrl).catch((err) =>
       Alert.alert(
         "Erro",
-        "O WhatsApp não está instalado no seu dispositivo."
-      );
-      return;
-    }
-    Linking.openURL(whatsappUrl).catch((err) =>
-      console.error("Erro ao abrir WhatsApp:", err)
+        "Não foi possível abrir o WhatsApp. Tente novamente."
+      )
     );
+    return;
   
   };
 

@@ -84,20 +84,9 @@ export default function ProviderHomeScreen() {
 
     const whatsappUrl = `https://wa.me/${formattedNumber}`;
 
-    Linking.canOpenURL(whatsappUrl)
-      .then((supported) => {
-        if (supported) {
-          return Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            "Erro",
-            "O WhatsApp não está instalado neste dispositivo."
-          );
-        }
-      })
-      .catch((err) =>
-        console.error("Ocorreu um erro ao tentar abrir o WhatsApp:", err)
-      );
+    Linking.openURL(whatsappUrl).catch((err) =>
+      console.error("Erro ao abrir o WhatsApp:", err)
+    );
   };
 
   return (
