@@ -78,14 +78,14 @@ export default function UserHomeScreen() {
     setModalVisible(true);
   };
 
-  const handleHirePress = (phoneNumber: string) => {
+  const handleHirePress = async (phoneNumber: string) => {
     if (!phoneNumber) {
       Alert.alert("Erro", "Número de telefone não disponível.");
       return;
     }
 
     try {
-      const hireProviderResponse = createServiceRequest(
+      const hireProviderResponse = await createServiceRequest(
         userToken,
         selectedProvider.id
       );
@@ -132,6 +132,7 @@ export default function UserHomeScreen() {
 
     return (
       <MapView
+        provider="google"
         style={styles.map}
         initialRegion={{
           latitude: location.coords.latitude,

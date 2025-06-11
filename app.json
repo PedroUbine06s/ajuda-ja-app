@@ -9,6 +9,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyCkX2QTi3CuEgvj6219Y2eVyKhWDq3XXmA"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Precisamos da sua localização para encontrar prestadores próximos."
+      },
       "supportsTablet": true
     },
     "android": {
@@ -16,8 +22,19 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCkX2QTi3CuEgvj6219Y2eVyKhWDq3XXmA"
+        }
+      },
       "edgeToEdgeEnabled": true,
-      "package": "com.pedroubine.ajudaja"
+      "package": "com.pedroubine.ajudaja",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -35,16 +52,37 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          },
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "extra": {
       "router": {},
       "eas": {
         "projectId": "4bf76a7c-6eb1-40ac-9bf3-3b76364b9c8e"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4bf76a7c-6eb1-40ac-9bf3-3b76364b9c8e"
     }
   }
 }
