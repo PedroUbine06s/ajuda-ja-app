@@ -50,8 +50,8 @@ export default function ProviderHomeScreen() {
         if (userToken) {
           await patchLoggedUserLocation(
             userToken,
-            currentLocation.coords.latitude,
-            currentLocation.coords.longitude
+            currentLocation.coords.latitude + 0.01,
+            currentLocation.coords.longitude + 0.01
           );
         } else {
           console.warn("Token de usuário não fornecido.");

@@ -102,18 +102,19 @@ export default function UserHomeScreen() {
 
     const formattedPhoneNumber = phoneNumber.replace(/\D/g, "");
     const whatsappUrl = `https://wa.me/${formattedPhoneNumber}`;
-    Linking.canOpenURL(whatsappUrl)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            "Erro",
-            "O WhatsApp não está instalado no seu dispositivo."
-          );
-        }
-      })
-      .catch((err) => console.error("Erro ao abrir WhatsApp:", err));
+
+    const canOpenUrl = await Linking.canOpenURL(whatsappUrl);
+    if (!canOpenUrl) {
+      Alert.alert(
+        "Erro",
+        "O WhatsApp não está instalado no seu dispositivo."
+      );
+      return;
+    }
+    Linking.openURL(whatsappUrl).catch((err) =>
+      console.error("Erro ao abrir WhatsApp:", err)
+    );
+  
   };
 
   const renderContent = () => {

@@ -206,7 +206,6 @@ export const createServiceRequest = async (
   serviceProviderId: number
 ) => {
   const endPoint = `${BASE_URL}/service-requests`;
-  console.log(serviceProviderId);
   try {
     const requestBody: any = {
       serviceProviderId,

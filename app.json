@@ -34,9 +34,9 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ],
-      "queries": {
-        "package": ["com.whatsapp"]
-      }
+      "queries": [
+        "com.whatsapp"
+      ]
     },
     "web": {
       "bundler": "metro",
